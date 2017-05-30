@@ -899,6 +899,7 @@
     "Msg_Success_PasswordReset": "Password has been updated.Please login with your new password.",
     "Approved": "Approved",
     "Rejected": "Rejected",
+    "My_Badges_Achievements" : "My Badges Achievements",
     "Msg_Pending_PasswordReset": "Your request is in pending. Please stay calm and tune with us.",
     "Msg_Request_PasswordReset": "Password reset request email has been sent. Please stay tune with us.",
     "Set_Password": "Set Password",

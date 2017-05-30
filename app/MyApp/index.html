@@ -210,7 +210,7 @@
     <script src="app/views/Search.js"></script> <!-- app/views.js -->
     <script src="app/views/SearchSpan.js"></script> <!-- app/views.js -->
     <script src="app/views/SearchSpans.js"></script> <!-- app/views.js -->
-
+    <script src="app/views/BadgesAchievement.js"></script><!-- app/views.js -->
     <script src="app/views/RequestView.js"></script> <!-- app/views.js -->
 
     <script src="app/views/FeedbackTable.js"></script> <!-- app/views.js -->
@@ -479,7 +479,13 @@
                     <td class="left">
                         <div class="bellLocation"></div>
                         <div class="name"></div>
-                        <div class="visits">  </div>
+                        <div class="visits"></div>
+                        <div class="badges">
+                            <%=App.languageDict.attributes.Badges%>
+                            <a href="#badgesAchievement/<%=$.cookie('Member._id')%>">
+                            <img src="img/badges.png" width="40px" height="20" id="badges" />
+                            </a>
+                        </div>
                     </td>
                     <td class="right">
                         <div class="now dateOnDashboard" ></div>
@@ -580,6 +586,9 @@
             <textarea id="shownotes"  style="width: 599px; height: 96px;resize: none;" disabled></textarea><br/>
         </div>
 
+
+    </script>
+    <script type="text/html" id="template-BadgesAchievement">
 
     </script>
 

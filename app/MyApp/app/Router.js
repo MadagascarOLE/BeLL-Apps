@@ -95,7 +95,9 @@ $(function() {
             'checksum(/:nation/:url)': 'checkSum',
             'listLearnersCredits/:cid': 'showLearnersListForCredits',
             'passwordResetEmail': 'showPasswordResetEmail',
-            'password-reset': 'showPasswordReset'
+            'password-reset': 'showPasswordReset',
+            'badgesAchievement/:memberId': 'memberBadgesAchievement'
+
         },
         addOrUpdateWelcomeVideoDoc: function() {
             // fetch existing welcome video doc if there is any
@@ -6728,6 +6730,23 @@ $(function() {
             });
             passwordResetView.render();
             App.$el.children('.body').append(passwordResetView.el)
+        },
+        memberBadgesAchievement: function(mId){
+             console.log(mId)
+             var member = new App.Models.Member();
+            member.id = mId
+            member.fetch({
+                async: false
+            })
+            var badgesachivement = new App.Views.BadgesAchievement({
+                  model:member,
+                 });
+            badgesachivement.render()
+            App.$el.children('.body').html('<div id="Badges_Achievement"></div>');
+            $('#Badges_Achievement').append('<div><h2>'+App.languageDict.attributes.My_Badges_Achievements+'</h2><img src="img/trophy.png" height="100px" style = "margin-top: -68px; margin-left: 954px; height: 80px;"></div>')
+            $('#Badges_Achievement').append(badgesachivement.el);
+             var directionOfLang = App.languageDict.get('directionOfLang');
+             applyCorrectStylingSheet(directionOfLang)
         }
     }))
 })

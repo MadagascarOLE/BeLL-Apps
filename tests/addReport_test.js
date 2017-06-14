@@ -54,14 +54,12 @@ Scenario('test AddReport', (I) => {
 	I.waitForEnabled(navBar);
 	I.click(report);
 	I.seeInCurrentUrl('#reports');
-	I.wait(5)
 	I.waitForVisible(newReport);
 	I.waitForEnabled(newReport);
 	I.click(newReport);
 	I.seeInCurrentUrl('#reports/add');
-	I.wait(2);
 	I.waitForVisible(formClass);
-	I.waitForEnabled(formClass);
+  I.waitForEnabled(formClass);
 	I.fillField('title', "New Report");
 	I.fillField('author', "New Author");
 	I.selectOption(date, "22");
@@ -76,21 +74,21 @@ Scenario('test AddReport', (I) => {
 	I.waitForEnabled(ActReport);
 	I.click(ActReport);
 	I.seeInCurrentUrl('#logreports');
-	I.wait(2);
-	I.waitForVisible(dateVis);
+  I.waitForVisible(dateVis);
+  I.waitForEnabled(dateVis);
 	I.fillField(startDt, sdate);
 	I.fillField(endDt, edate);
 	I.click(reportBtn);
 	I.seeInCurrentUrl('#logreports');
-	I.wait(5);
+	I.wait(1);
 	I.amOnPage('http://127.0.0.1:5981/apps/_design/bell/MyApp/index.html#reports');
-	I.wait(2);
 	I.waitForVisible(comment);
 	I.waitForEnabled(comment);
-	I.click(comment);
+  I.click(comment);
+  I.waitForVisible('//*[@name="comment"]');
+  I.waitForEnabled('//*[@name="comment"]');
 	I.fillField('comment', "This is a comment to Trend Report");
 	I.click(subBtn);
-	I.wait(2);
 	I.waitForVisible(clBtn);
 	I.waitForEnabled(clBtn);
 	I.click(clBtn);
@@ -98,7 +96,6 @@ Scenario('test AddReport', (I) => {
 	I.wait(5);
 	I.click('Trend Activity Report');
 	I.seeInCurrentUrl('#trendreport');
-	I.wait(2);
 	I.waitForVisible(selectDt);
 	I.waitForEnabled(selectDt);
 	I.fillField(selectDt, edate);
@@ -106,9 +103,7 @@ Scenario('test AddReport', (I) => {
 	I.waitForEnabled(genRep);
 	I.click(genRep);
 	I.seeInCurrentUrl('#trendreport');
-	I.wait(5);
-
-
+	I.wait(1);
 });
 Scenario('test second DeleteReport', (I) => {
 	var navBar = '//*[@id="itemsinnavbar"]';

@@ -110,12 +110,10 @@ Scenario('test second DeleteReport', (I) => {
 	var report = '//*[@id="itemsinnavbar"]/li/a[@href="#reports"]';
 	var delet = '//*[@class="btn btn-danger destroy"]';
 	I.amOnPage('http://127.0.0.1:5981/apps/_design/bell/MyApp/index.html');
-	I.wait(3);
 	I.waitForVisible(navBar);
 	I.waitForEnabled(navBar);
 	I.click(report);
 	I.seeInCurrentUrl('#reports');
-	I.wait(2)
 	I.waitForVisible(delet);
 	I.waitForEnabled(delet);
 	I.click(delet);

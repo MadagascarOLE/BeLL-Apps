@@ -93,8 +93,9 @@ Scenario('test AddReport', (I) => {
 	I.waitForEnabled(clBtn);
 	I.click(clBtn);
 	I.seeInCurrentUrl('#reports');
-	I.wait(5);
-	I.click('Trend Activity Report');
+  I.wait(5);
+  I.waitForText('Trend Activity Report');
+	//I.click('Trend Activity Report');
 	I.seeInCurrentUrl('#trendreport');
 	I.waitForVisible(selectDt);
 	I.waitForEnabled(selectDt);
@@ -117,9 +118,9 @@ Scenario('test second DeleteReport', (I) => {
 	I.waitForVisible(delet);
 	I.waitForEnabled(delet);
 	I.click(delet);
-	I.wait(2);
-	I.seeInPopup("Are you sure you want to delete this report?");
+  I.waitUntil(function (I) { I.seeInPopup("Are you sure you want to delete this report?"); });
+	//I.seeInPopup("Are you sure you want to delete this report?");
 	I.acceptPopup();
-	I.wait(5);
+	I.wait(2);
 	I.seeInCurrentUrl('#reports');
 	}); 

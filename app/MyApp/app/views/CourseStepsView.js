@@ -15,7 +15,7 @@ $(function () {
         },
         addStep: function (model) {
 
-            this.$el.append('<tr><td></td><td><b>' + model.get('title') + '</b></br></br>' + model.get('description') + '</td></tr>')
+            this.$el.append('<tr><td><b>' + model.get('title') + '</b></td></br></br><td><textarea class = "viewDescription">' + model.get('description') + '<textarea></td></tr>')
 
         }
 

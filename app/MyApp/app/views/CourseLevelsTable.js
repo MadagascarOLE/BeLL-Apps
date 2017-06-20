@@ -189,6 +189,14 @@ $(function () {
                     ui.item.children("h3").triggerHandler("focusout");
                 }
             });
+            $('textarea').each(function() {
+            var simplemde = new SimpleMDE({
+                element: this,
+                toolbar: false,
+            });
+                simplemde.render();
+                simplemde.togglePreview();
+            })
         },
 
         render: function () {

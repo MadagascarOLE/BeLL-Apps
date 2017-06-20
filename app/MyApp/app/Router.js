@@ -543,7 +543,7 @@ $(function() {
                 creditsTableView.courseId=courseId;
                 creditsTableView.memberId=memberId;
                 creditsTableView.render();
-                App.$el.children('.body').html('<div id="creditsTable" style = "margin-right:20px; margin-left:20px;"></div>');
+                App.$el.children('.body').html('<div id="creditsTable"></div>');
                 var select = $("<select id='learnerSelector' onchange='getName($(this).val())'>");
                 var name, id;
                 learnerCollection.each(
@@ -1432,7 +1432,7 @@ $(function() {
             var modelForm = new App.Views[className + 'Form']({
                 model: model
             })
-            App.$el.children('.body').html('<div id="AddCourseMainDiv" style = "margin-right:20px; margin-left:20px"></div>');
+            App.$el.children('.body').html('<div id="AddCourseMainDiv"></div>');
             // Bind form to the DOM
             if (modelId && url_split[1]=="view") {
                 model.id = modelId
@@ -1468,6 +1468,10 @@ $(function() {
                 })
                 // Set up the form
                 modelForm.render();
+                var simplemde = new SimpleMDE({
+                    element: $("li#courseDescription > div textarea[name='description']")[0],
+                    forceSync: true
+                });
                 $('.bbf-form .field-courseLeader .bbf-editor select').attr('multiple','multiple');
                 $('.form .field-startDate input').datepicker({
                     todayHighlight: true
@@ -2363,7 +2367,6 @@ $(function() {
             if (course.get('courseLeader') != undefined && course.get('courseLeader').indexOf($.cookie('Member._id'))!=-1 || roles.indexOf("Manager") != -1) {
                 $('.courseSearchResults_Bottom h2').append('<button id="manageOnCourseProgress" class="btn btn-success"  onclick = "document.location.href=\'#course/manage/' + cId + '\'">'+App.languageDict.attributes.Manage+'</button>')
                 $('.courseSearchResults_Bottom').append('<a id="CourseStatistics" class="btn btn-inverse"  href=\'#CourseStatistics/' + cId + '\'">'+App.languageDict.attributes.Course_Progress_Statistics+'</a>')
-                $('.courseSearchResults_Bottom h2').append("<a class='btn btn-info' style='margin-left: 10px;' onclick=App.Router.downloadCourseCSV('" + cId + "')>" +App.languageDict.attributes.Download+"</a>")
             }
             $('.courseSearchResults_Bottom').append('<p id="graph2title"style="text-align:center">'+App.languageDict.attributes.Individual_Member_Course_Progress+'</p>')
             App.$el.children('.body').append('<div id="detailView"><div id="graph2" class="flotHeight"></div><div id="choices" class="choice"></div></div><div id="birdEye"><div id="graph1" class="flotHeight"></div></div>')
@@ -2388,156 +2391,6 @@ $(function() {
             applyCorrectStylingSheet(directionOfLang);
         },
 
-        downloadCourseCSV: function(courseId) {
-            var that = this;
-            var jsonObjectsData = [];
-            var course = new App.Models.Course({
-                _id: courseId
-            });
-            course.fetch({
-                async:false
-            });
-            var allResults = new App.Collections.StepResultsbyCourse()
-            allResults.courseId = courseId
-            allResults.fetch({
-                async: false
-            })
-
-            for (var i = 0; i < allResults.length; i++) {
-                student = new App.Models.Member({
-                    _id: allResults.models[i].attributes.memberId
-                })
-                student.fetch({
-                    async: false
-                })
-
-                var sstatus = allResults.models[i].attributes.stepsStatus
-                var sp = allResults.models[i].attributes.stepsResult
-                var ssids = allResults.models[i].attributes.stepsIds
-                var pqattempts = allResults.models[i].attributes.pqAttempts
-
-                memberProgressRecord = allResults.first();
-                var ssids = memberProgressRecord.get('stepsIds')
-                for (var j = 0; j < ssids.length; j++) {
-                    var courseSteps = new App.Models.CourseStep()
-                    courseSteps.id = ssids[j];
-                    courseSteps.fetch({
-                        async: false
-                    })
-                    var stepQuestionIds = courseSteps.attributes.questionslist
-                    if(stepQuestionIds != null) {
-                        for (var k = 0; k < stepQuestionIds.length; k++) {
-                            var questionlist = new App.Models.CourseQuestion({
-                                _id: stepQuestionIds[k]
-                            })
-                            questionlist.fetch({
-                                async: false
-                            });
-                            var courseAnswer = new App.Collections.CourseAnswer()
-                            courseAnswer.StepID = courseSteps.attributes._id
-                            courseAnswer.MemberID =  allResults.models[i].attributes.memberId
-                            courseAnswer.pqattempts = pqattempts[j]
-                            courseAnswer.QuestionID = stepQuestionIds[k]
-                            courseAnswer.fetch({
-                                async: false
-                            })
-                            if(courseAnswer.first() != undefined && courseAnswer.pqattempts > 0 ){
-                                var JSONObj = {"MemberId":"","MemberName":"","StepNo":"","StepName":"", "QuestionID":"","Question":"", "Answer":[], "TotalMarks":"",  "ObtainMarks":"", "Attempt":""};
-                                JSONObj.MemberId =  allResults.models[i].attributes.memberId
-                                JSONObj.MemberName =  student.toJSON().firstName + ' ' + student.toJSON().lastName
-                                JSONObj.StepNo = courseSteps.attributes.step
-                                JSONObj.StepName = courseSteps.attributes.title
-                                JSONObj.QuestionID = questionlist.attributes._id
-                                JSONObj.Question = questionlist.attributes.Statement
-                                JSONObj.Attempt =  pqattempts[j]
-                                JSONObj.TotalMarks =  questionlist.attributes.Marks
-                                if(courseSteps.attributes.stepType == "Subjective"){
-                                    if(questionlist.attributes.Type == "Multiple Choice"){
-                                        if(courseAnswer.first().get('AttemptMarks') != null){
-                                            JSONObj.ObtainMarks =  courseAnswer.first().get('AttemptMarks')
-                                        } else {
-                                            JSONObj.ObtainMarks = App.languageDict.attributes.UnReviewed
-                                        }
-                                    } else{
-                                        if(courseAnswer.first().get('ObtainMarks') != undefined){
-                                            JSONObj.ObtainMarks =  courseAnswer.first().get('ObtainMarks')
-                                        } else {
-                                            JSONObj.ObtainMarks = App.languageDict.attributes.UnReviewed
-                                        }
-                                    }
-                                } else {
-                                    if(courseAnswer.first().get('AttemptMarks') != null){
-                                        JSONObj.ObtainMarks =  courseAnswer.first().get('AttemptMarks')
-                                    } else {
-                                        JSONObj.ObtainMarks = App.languageDict.attributes.UnReviewed
-                                    }
-                                }
-                                JSONObj.Answer = courseAnswer.first().get('Answer')
-                                jsonObjectsData.push(JSONObj)
-                            }
-                        }
-                    }
-                }
-            }
-            if(jsonObjectsData.length > 0) {
-                that.JSONToCSVConvertor(jsonObjectsData, course.attributes.CourseTitle);
-            } else {
-                alert(App.languageDict.attributes.Unable_To_Download_Data);
-            }
-        },
-
-        JSONToCSVConvertor: function (JSONData, ReportTitle) {
-            //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
-            var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
-            var CSV = '';
-            //Set Report title in first row or line
-            //CSV += label + '\r\n\n';
-            //This will generate the Label/Header
-            var row = "";
-            //This loop will extract the label from 1st index of on array
-            for (var index in arrData[0]) {
-                //Now convert each value to string and comma-seprated
-                row += index + ',';
-            }
-            row = row.slice(0, -1);
-            //append Label row with line break
-            CSV += row + '\r\n';
-            //1st loop is to extract each row
-            for (var i = 0; i < arrData.length; i++) {
-                var row = "";
-                //2nd loop will extract each column and convert it in string comma-seprated
-                for (var index in arrData[i]) {
-                    row += '"' + arrData[i][index] + '",';
-                }
-                row.slice(0, row.length - 1);
-                //add a line break after each row
-                CSV += row + '\r\n';
-            }
-            if (CSV == '') {
-                alert("Invalid data");
-                return;
-            }
-            //Generate a file name
-            var fileName = "";
-            //this will remove the blank-spaces from the title and replace it with an underscore
-            fileName += ReportTitle.toString().replace(/ /g,"_");
-            //Initialize file format you want csv or xls
-            var uri = 'data:text/csv;charset=utf-8,' + CSV;
-            uri = encodeURI(uri);
-            // Now the little tricky part.
-            // you can use either>> window.open(uri);
-            // but this will not work in some browsers
-            // or you will not get the correct file extension
-            //this trick will generate a temp <a /> tag
-            var link = document.createElement("a");
-            link.href = uri;
-            //set the visibility hidden so it will not effect on your web-layout
-            link.style = "visibility:hidden";
-            link.download = fileName + ".csv";
-            //this part will append the anchor tag and remove it after automatic click
-            App.$el.append(link);
-            link.click();
-        },
         ManageCourse: function(courseId) {
             var that = this
             levels = new App.Collections.CourseLevels()
@@ -2554,11 +2407,15 @@ $(function() {
                         trigger: true
                     })
                 })
-                App.$el.children('.body').html('<div id="AddCourseMainDiv" style = "margin-right:20px; margin-left:20px"></div>');
+                App.$el.children('.body').html('<div id="AddCourseMainDiv"></div>');
                 $('#AddCourseMainDiv').append('<br/><h3>'+App.languageDict.attributes.Course_Manage+'</h3>');
                 $('#AddCourseMainDiv').append(modelForm.el);
                 // Set up the form
                 modelForm.render();
+                var simplemde = new SimpleMDE({
+                    element: $("li#courseDescription > div textarea[name='description']")[0],
+                    forceSync: true
+                });
                 $('.bbf-form').find('.field-CourseTitle').find('label').html(App.languageDict.attributes.Course_Title);
                 $('.bbf-form').find('.field-languageOfInstruction').find('label').html(App.languageDict.attributes.Language_Of_Instruction);
                 $('.bbf-form').find('.field-memberLimit').find('label').html(App.languageDict.attributes.Member_Limit);
@@ -2645,6 +2502,10 @@ $(function() {
                         lForm.render()
                         $('.courseSearchResults_Bottom').append(lForm.el)
                         lForm.sliders();
+                        var simplemde = new SimpleMDE({
+                            element: $("li#stepDescription > div textarea[name='description']")[0],
+                            forceSync: true
+                        });
                         $("input[name='step']").attr("disabled", true);
                         $("input[name='passingPercentage']").attr("readonly",true);
                         $("input[name='passingPercentage']").val(10)
@@ -2733,8 +2594,8 @@ $(function() {
             } else {
                 button += '<br/><br/>'
             }
-            App.$el.children('.body').html('<div class="courseEditStep" style = "margin-right:20px; margin-left:20px;"></div>')
-            $('.courseEditStep').append('<div id="courseName-heading" style = "margin-right:20px; margin-left:20px;"><h3>'+App.languageDict.attributes.Course_Details+' | ' + courseName + '</h3></div>')
+            App.$el.children('.body').html('<div class="courseEditStep"></div>')
+            $('.courseEditStep').append('<div id="courseName-heading"><h3>'+App.languageDict.attributes.Course_Details+' | ' + courseName + '</h3></div>')
             $('.courseEditStep').append(button)
             var memberModelArr = [];
             for(var i = 0; i < courseLeader.length; i++)
@@ -2761,6 +2622,14 @@ $(function() {
             })
             courseStepsView.render()
             $('.courseEditStep').append(CourseDetailsView.el)
+            $('textarea').each(function() {
+            var simplemde = new SimpleMDE({
+                element: this,
+                toolbar: false,
+            });
+                simplemde.render();
+                simplemde.togglePreview();
+            })
             $('.courseEditStep').append('<div id="courseSteps-heading"><h5>'+App.languageDict.attributes.Course_Steps+'</h5></div>')
             $('.courseEditStep').append(courseStepsView.el)
             $('#admissionButton').on('click', function(e) {
@@ -2975,11 +2844,15 @@ $(function() {
                         model: levelInfo
                     })
                     levelDetails.render();
-                    App.$el.children('.body').html('<div class="courseEditStep" style ="margin-right:20px; margin-left:20px"></div>');
+                    App.$el.children('.body').html('<div class="courseEditStep"></div>');
                     $('.courseEditStep').append('<h3>'  +App.languageDict.attributes.Step +levelInfo.get("step") + ' | ' + levelInfo.get("title") + '</h3>')
                     $('.courseEditStep').append('<a class="btn btn-success" href=\'#level/add/' + levelInfo.get("courseId") + '/' + lid + '/-1\'">'+App.languageDict.attributes.Edit_Step+'</a>&nbsp;&nbsp;')
                     $('.courseEditStep').append("<a class='btn btn-success' href='#course/manage/" + levelInfo.get('courseId') + "'>"+App.languageDict.attributes.Back_To_Course+" </a>&nbsp;&nbsp;")
                     $('.courseEditStep').append("</BR></BR><B>"+App.languageDict.attributes.Description+"</B></BR><TextArea id='LevelDescription' rows='5' cols='100' style='width:98%;'>" + levelInfo.get("description") + "</TextArea></BR>")
+                    var simplemde = new SimpleMDE({
+                        element: $("#LevelDescription")[0],
+                        forceSync: true
+                    });
                     $('.courseEditStep').append("<button class='btn btn-success backToSearchButton' onclick='document.location.href=\"#savedesc/" + lid + "\"'>"+App.languageDict.attributes.Save+"</button></BR></BR>")
                     $('.courseEditStep').append('<B>'+App.languageDict.attributes.Resources+'</B>&nbsp;&nbsp;<a class="btn btn-success"  style="" href=\'#search-bell/' + lid + '/' + rid + '\'">'+App.languageDict.attributes.Add+'</a>')
                     $('.courseEditStep').append(levelDetails.el)
@@ -2990,7 +2863,7 @@ $(function() {
                         $('.courseEditStep').append('<B>' + levelInfo.get("title") + ' - '+App.languageDict.attributes.Test+'</B><a class="btn btn-primary backToSearchButton"   href=\'#create-test/' + levelInfo.get("_id") + '/' + levelInfo.get("_rev") + '/' + levelInfo.get("title") + '\'">'+App.languageDict.attributes.Edit_Test+'</a>')
                         $('.courseEditStep').append('<a class="btn btn-primary" style="margin-left: 1100px" id="viewTest"  onclick=App.Router.ViewTest("' + lid + '","' + rid + '")>'+App.languageDict.attributes.View_Test+'</a>&nbsp;&nbsp;')
                     }
-                    $('.body').append('<div id="viewTest" style = "margin-right:20px; margin-left:20px"></div>');
+                    $('.body').append('<div id="viewTest"></div>');
 
                 }
             });
@@ -3314,7 +3187,7 @@ $(function() {
             resourcesTableView.render()
             App.$el.children('.body').html('')
             if (roles.indexOf("Manager") > -1) {
-                App.$el.children('.body').append('<p id="firstHeadingOfReports" style="margin-top:10px; margin-left: 23px;"><a id="fHonRep" class="btn btn-success" href="#reports/add">'+App.languageDict.attributes.Add_a_New_Report+'</a>' +
+                App.$el.children('.body').append('<p id="firstHeadingOfReports" style="margin-top:10px"><a id="fHonRep" class="btn btn-success" href="#reports/add">'+App.languageDict.attributes.Add_a_New_Report+'</a>' +
                     '<a id="sHonRep" style="margin-left:20px" class="btn btn-success" href="#logreports">'+App.languageDict.attributes.Activity_Report+'</a>' +
                     '<a style="margin-left:20px" class="btn btn-success" href="#trendreport">'+App.languageDict.attributes.Trend+' '+App.languageDict.attributes.Activity_Report+'</a></p>')
             } else {
@@ -3335,8 +3208,8 @@ $(function() {
             } else {
                 temp = temp + ' ' +App.languageDict.attributes.Nation+' '+App.languageDict.attributes.Bell;
             }
-            App.$el.children('.body').append('<h4 id="secondHeadingOfReports"><span style="color:gray; margin-right:20px;margin-left:20px;">' + temp + '</span> | '+App.languageDict.attributes.Reports+'</h4>')
-            var tableDiv="<div id='reportTable' style = 'margin-right:20px;margin-left:20px;'></div>";
+            App.$el.children('.body').append('<h4 id="secondHeadingOfReports"><span style="color:gray;">' + temp + '</span> | '+App.languageDict.attributes.Reports+'</h4>')
+            var tableDiv="<div id='reportTable'></div>";
             App.$el.children('.body').append(tableDiv);
             $('#reportTable').append(resourcesTableView.el);
             if(directionOfLang.toLowerCase()==="right"){
@@ -4825,7 +4698,7 @@ $(function() {
                 })
                 resourceFeedback.on('sync', function() {
                     feedbackTable.render();
-                    App.$el.children('.body').html('<div id="feedbackResourceDiv" style = "margin-right:20px; margin-left:20px"></div>');
+                    App.$el.children('.body').html('<div id="feedbackResourceDiv"></div>');
                     $('#feedbackResourceDiv').append('<h3>'+App.languageDict.attributes.Feedback_For+' "' + resource.get('title') + '"</h3>')
                     var url_togo = "#resource/feedback/add/" + resourceId + "/" + resource.get('title')
                     $('#feedbackResourceDiv').append('<a class="btn btn-primary"" href="' + url_togo + '"><i class="icon-plus"></i>'+App.languageDict.attributes.Add_your_feedback+'</a>')
@@ -4868,7 +4741,7 @@ $(function() {
             feedbackForm.rtitle = resInfo.get('title')
             var user_rating
             feedbackForm.render()
-            App.$el.children('.body').html('<div id="feedbackResoDiv" style = "margin-right:20px; margin-left:20px"></div>');
+            App.$el.children('.body').html('<div id="feedbackResoDiv"></div>');
             $('#feedbackResoDiv').append('<h4 style="color:gray">'+App.languageDict.attributes.Add_Feedback_For+' '+'<span style="color:black;"> ' + resInfo.get('title') + '</span></h4>')
             $('#feedbackResoDiv').append('<p style="font-size:15px;">&nbsp;&nbsp;<span style="font-size:50px;">.</span>'+App.languageDict.attributes.Rating+'</p>')
             $('#feedbackResoDiv').append('<div id="star" data-score="0"></div>')

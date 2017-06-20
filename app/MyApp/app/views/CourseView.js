@@ -40,7 +40,7 @@ $(function() {
             this.$el.append('<tr><td><b>'+App.languageDict.attributes.Name+'</b></td><td>' + courseInfo.CourseTitle + '</td></tr>')
             this.$el.append('<tr><td><b>'+App.languageDict.attributes.Subject_Level+' </b></td><td>' + courseInfo.subjectLevel + '</td></tr>')
             this.$el.append('<tr><td><b>'+App.languageDict.attributes.Grade_Level+' </b></td><td>' + courseInfo.gradeLevel + '</td></tr>')
-            this.$el.append('<tr><td><b>'+App.languageDict.attributes.Description+'</b></td><td>' + courseInfo.description + '</td></tr>')
+            this.$el.append('<tr><td><b>'+App.languageDict.attributes.Description+'</b></td><td ><textarea class = "viewDescription">' + courseInfo.description + '</textarea></td></tr>')
             this.$el.append('<tr><td><b>'+App.languageDict.attributes.Leader_Name+'</b></td><td>' + leaderNames + '</td></tr>')
             this.$el.append('<tr><td><b>'+App.languageDict.attributes.Leader_Email+'</b></td><td>' + leaderEmails + '</td></tr>')
             this.$el.append('<tr><td><b>'+App.languageDict.attributes.Leader_Phone_Number+'</b></td><td>' + leaderPhones + '</td></tr>')

@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="vendor/jQuery-multiselect/jquery.multiselect.css"/>
 
     <link rel="stylesheet" href="vendor/jqPlot/jquery.jqplot.css"/>
+    <link rel="stylesheet" href="vendor/simplemde/simplemde.min.css"/>
+
 
     <!--
       DEPENDENCIES
@@ -83,7 +85,8 @@
     <script src="vendor/jqPlot/jquery.flot.axislabels.js"></script> <!-- app/vendor.js -->
     <script src="vendor/jshash-2.2/md5-min.js"></script> <!-- app/vendor.js -->
     <script src="vendor/jszip.min.js"></script> <!-- app/vendor.js -->
-
+    <script src="vendor/simplemde/simplemde.min.js"></script> <!-- app/vendor.js -->
+    <script src="vendor/simplemde/markdown.min.js"></script> <!-- app/vendor.js -->   
 
     <!-- html-templates -->
     <link rel="text" href="app/templates/templates.txt"/>
@@ -515,11 +518,11 @@
                         <td id ="last0"class=""></td>
                     </tr>
                     <tr>
-                        <td id="first1">
+                        <td id="first1" class="">
                             <a href="#courses/barchart"><%= languageDict.attributes.My_Courses_Progress %></a>
                         </td>
                         <td class="scrollable-courses">
-                            <div class="inner" style ="height: 111px;overflow-x: auto; width: 813px;">
+                            <div class="inner">
                                 <table id="cc" class="inner-table">
                                 </table>
                             </div>
@@ -551,7 +554,7 @@
             </div>
 
 
-            <table id="bottomButtonsOnDashboard" class="page-bottom-navtable" style="border-collapse: separate;margin-top: 8px;">
+            <table id="bottomButtonsOnDashboard" class="page-bottom-navtable" style="border-collapse: separate;">
                 <tr>
                     <!--<td><button class="btn btn-hg btn-primary" onclick = "document.location.href='#badges'"><%= languageDict.attributes.Badges %></button></td>-->
                     <!--<td><button id="creditsDash" class="btn btn-hg btn-primary" onclick = "document.location.href='#credits'"> Credits(<%=new_learners_count%>) </button></td>-->
@@ -1466,7 +1469,12 @@
                 </tr>
                 <tr class="level-section-data">
                     <td colspan="3">
-                        <%=description%>
+                        <textarea><%=description%></textarea>
+                    </td>
+                </tr>
+                <tr class="level-section-title">
+                    <td colspan="3">
+                        <%=languageDict.attributes.Instructions%></br>
                     </td>
                 </tr>
 
@@ -1524,31 +1532,27 @@
                 <table>
                     <tr>
                         <td>
-                            <b><%=Statement%></b>
+                            <textarea><%=Statement%></textarea> 
                         </td>
-                        </style>
                     </tr>
                     <tr>
                         <td>
-                            <input type="text" value="<%=answer[0]%>" name="singleLineAnswer" style="margin-bottom: -45px;">
+                            <input type="text" value="<%=answer[0]%>" name="singleLineAnswer">
                         </td>
                     </tr>
                 </table>
             </div>
      <% } else if (Type == "Comment/Essay Box") { %>
-        <style>
-            textarea{margin: 0px 0px -45px;width: 616px;height: 298px;}
-        </style>
             <div class="commentEssay">
                 <table>
                     <tr>
                         <td>
-                            <b><%=Statement%></b>
+                            <textarea><%=Statement%></textarea> 
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <textarea id="commentEssay"><%=answer[0]%></textarea>
+                            <input type="text" value="<%=answer[0]%>" name="commentEssay">
                         </td>
                     </tr>
                 </table>
@@ -1558,7 +1562,7 @@
                 <table>
                     <tr>
                         <td>
-                           <b><%=Statement%></b>
+                            <textarea><%=Statement%></textarea> 
                         </td>
                     </tr>
                 <tr>
@@ -1568,7 +1572,7 @@
                      <input type="hidden" name="_attachment" id="attachmentId" value="">
                      <input type="hidden" value=<%=stepId%> id="stepId<%=_id%>">
                      <input type="hidden" value=<%=_id%> id="questionId<%=_id%>">
-                     <input class='btn btn-primary' style="font-size: 15px; margin-bottom: -45px;" type="button" value="<%=languageDict.attributes.Upload%> <%=Type%>" id="fakeBrowse" onclick="HandleBrowseClick1('<%=_id%>')" />
+                     <input class='btn btn-primary' style="font-size: 15px" type="button" value="<%=languageDict.attributes.Upload%> <%=Type%>" id="fakeBrowse" onclick="HandleBrowseClick1('<%=_id%>')" />
                      <% if (answer[0] != null && answer[0] != "") { %>
                         <a id="downloadAttac" class="btn btn-primary" href="/assignmentpaper/<%=answer[0]%>/<%=attachmentName%>"  target="_blank" ><%=App.languageDict.attributes.Download %></a>
                      <% } %>
@@ -1581,7 +1585,7 @@
                 <table>
                     <tr>
                         <td>
-                            <b><%=Statement%></b>
+                            <textarea><%=Statement%></textarea> 
                         </td>
                     </tr>
                     <tr>
@@ -1849,7 +1853,7 @@
     <script type="text/html" id="template-Search">
         <div id="search">
             <div class="row">
-                <div class="col-lg-5" style = "margin-right:20px; margin-left:20px">
+                <div class="col-lg-5">
                     <div class="form-course search-Box">
                         <label style='font-size:16px'><b><%= languageDict.attributes.Title %></b></label><br><input class="form-control" type="text" placeholder="" id="searchText" style="height:24px;margin-top:1%;width:347px"></input>
                     </div>

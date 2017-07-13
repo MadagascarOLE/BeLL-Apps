@@ -1228,3 +1228,7 @@ form > fieldset > ul > li.bbf-field.field-selectLanguage {
 #accept div input[name=accept]{
     margin-top: -45px;
 }
+.table-feedback{
+    margin-left:20px;
+    margin-right:20px
+}

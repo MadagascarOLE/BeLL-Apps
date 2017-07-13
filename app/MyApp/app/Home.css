@@ -42,6 +42,7 @@ select#onDashboardLanguage {
     margin-left: 10%;
     overflow: hidden;
     width: 90%;
+    margin-left: 20px;
 }
 #dashboard {
     height: 600px;
@@ -1030,4 +1031,8 @@ form > fieldset > ul > li.bbf-field.field-selectLanguage {
 }
 #accept div input[name=accept]{
     margin-top: -45px;
+}
+#collectionTable{
+    margin-left:20px;
+    margin-right:20px;
 }

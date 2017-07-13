@@ -663,6 +663,8 @@ body{
 #collectionTable{
     direction: rtl;
     text-align: right;
+    margin-left:20px;
+    margin-right:20px;
 }
 #mergeCollection{
     margin-right: 20px;

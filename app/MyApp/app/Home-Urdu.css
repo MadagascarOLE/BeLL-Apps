@@ -2,10 +2,8 @@
 .body {
     direction: rtl;
     margin-bottom: 30px;
-}
-div#parentLibrary{
-    margin-left: 20px;
     margin-right: 20px;
+    margin-left:20px;
 }
 #dashboard {
     height: 600px;
@@ -642,7 +640,6 @@ body{
 }
 #secLabelOnCollections{
     direction: rtl;
-    margin-right:2%;
 }
 #AddCollectionOnCollections{
     margin-right:8%;
@@ -663,8 +660,6 @@ body{
 #collectionTable{
     direction: rtl;
     text-align: right;
-    margin-left:20px;
-    margin-right:20px;
 }
 #mergeCollection{
     margin-right: 20px;
@@ -1227,8 +1222,4 @@ form > fieldset > ul > li.bbf-field.field-selectLanguage {
 }
 #accept div input[name=accept]{
     margin-top: -45px;
-}
-.table-feedback{
-    margin-left:20px;
-    margin-right:20px
 }

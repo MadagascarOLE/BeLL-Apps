@@ -418,7 +418,7 @@ $(function() {
             var lang = getLanguage($.cookie('Member._id'))
             languageDictValue = getSpecificLanguage(lang);
             var creditsView = new App.Views.CreditsLeaderView();
-            App.$el.children('.body').html('<div id="creditsMainTable" style="margin-right:20px; margin-left:20px;"></div>');
+            App.$el.children('.body').html('<div id="creditsMainTable"></div>');
             $('#creditsMainTable').append('<h3>' + 'Course Credits' + '</h3>');
             creditsView.addHeading();
             var count=0;
@@ -2325,7 +2325,7 @@ $(function() {
                   }
                  });
             coursestatisticview.render()
-            App.$el.children('.body').html('<div id="couarsestat" style="margin-left:20px; margin-right:20px;"></div>');
+            App.$el.children('.body').html('<div id="couarsestat"></div>');
             $('#couarsestat').append('<div><h2>'+App.languageDict.attributes.Course_Progress_Statistics+'</h2></div>')
             $('#couarsestat').append(coursestatisticview.el);
              var directionOfLang = App.languageDict.get('directionOfLang');
@@ -2360,7 +2360,7 @@ $(function() {
             course.fetch({
                 async: false
             })
-            App.$el.children('.body').html('<div class="courseSearchResults_Bottom" style="margin-right:20px; margin-left:20px"></div>');
+            App.$el.children('.body').html('<div class="courseSearchResults_Bottom"></div>');
             $('.courseSearchResults_Bottom').append("<h2> " + cname + "</h2>")
             if (course.get('courseLeader') != undefined && course.get('courseLeader').indexOf($.cookie('Member._id'))!=-1 || roles.indexOf("Manager") != -1) {
                 $('.courseSearchResults_Bottom h2').append('<button id="manageOnCourseProgress" class="btn btn-success"  onclick = "document.location.href=\'#course/manage/' + cId + '\'">'+App.languageDict.attributes.Manage+'</button>')
@@ -2369,7 +2369,7 @@ $(function() {
                 $('.courseSearchResults_Bottom h2').append("<a class='btn btn-info' style='margin-left: 10px;' onclick=App.Router.downloadSummariesCourseCSV('" + cId + "')>" +App.languageDict.attributes.Download_Summary+"</a>")
             }
             $('.courseSearchResults_Bottom').append('<p id="graph2title"style="text-align:center">'+App.languageDict.attributes.Individual_Member_Course_Progress+'</p>')
-            App.$el.children('.body').append('<div id="detailView" style="margin-right:20px; margin-left:20px;"><div id="graph2" class="flotHeight"></div><div id="choices" class="choice"></div></div><div id="birdEye" style="margin-right:20px; margin-left:20px;"><div id="graph1" class="flotHeight"></div></div>')
+            App.$el.children('.body').append('<div id="detailView"><div id="graph2" class="flotHeight"></div><div id="choices" class="choice"></div></div><div id="birdEye" style="margin-right:20px; margin-left:20px;"><div id="graph1" class="flotHeight"></div></div>')
             var allResults = new App.Collections.StepResultsbyCourse()
             if (course.get('courseLeader').indexOf($.cookie('Member._id')) == -1  &&  roles.indexOf("Manager") == -1) {
                 allResults.memberId = $.cookie('Member._id')
@@ -2792,8 +2792,8 @@ $(function() {
             } else {
                 button += '<br/><br/>'
             }
-            App.$el.children('.body').html('<div class="courseEditStep" style = "margin-right:20px; margin-left:20px;"></div>')
-            $('.courseEditStep').append('<div id="courseName-heading" style = "margin-right:20px; margin-left:20px;"><h3 style="margin-left: -21px;">'+App.languageDict.attributes.Course_Details+' | ' + courseName + '</h3></div>')
+            App.$el.children('.body').html('<div class="courseEditStep"></div>')
+            $('.courseEditStep').append('<div id="courseName-heading"><h3 style="margin-left: -21px;">'+App.languageDict.attributes.Course_Details+' | ' + courseName + '</h3></div>')
             $('.courseEditStep').append(button)
             var memberModelArr = [];
             for(var i = 0; i < courseLeader.length; i++)
@@ -3894,7 +3894,7 @@ $(function() {
             var directionOfLang = App.languageDict.get('directionOfLang');
             var context = this;
             App.$el.children('.body').html('');
-            $('<div id="trend-report-form" style="margin-left:20px; margin-right:20px;"></div>').appendTo(App.$el.children('.body'));
+            $('<div id="trend-report-form"></div>').appendTo(App.$el.children('.body'));
             var label = $("<label>").text(languageDictValue.attributes.TrendReport_msg+' ');
             $('#trend-report-form').append(label);
             var today = new Date();
@@ -5417,7 +5417,7 @@ $(function() {
                         collection: collections
                     })
                     collectionTableView.render()
-                    App.$el.children('.body').html('<p id="firstParaOnCollections" style="margin-top:20px; margin-right:20px;margin-left:20px;"><a id="addResourceOnCollection" class="btn btn-success" href="#resource/add">'+App.languageDict.attributes.Add_new_Resource+'</a><a id="requestResourceOnCollection" class="btn btn-success" onclick=showRequestForm("Resource")>'+App.languageDict.attributes.Request_Resource+'</a></p></span>')
+                    App.$el.children('.body').html('<p id="firstParaOnCollections"><a id="addResourceOnCollection" class="btn btn-success" href="#resource/add">'+App.languageDict.attributes.Add_new_Resource+'</a><a id="requestResourceOnCollection" class="btn btn-success" onclick=showRequestForm("Resource")>'+App.languageDict.attributes.Request_Resource+'</a></p></span>')
                     var configurations = Backbone.Collection.extend({
                         url: App.Server + '/configurations/_all_docs?include_docs=true'
                     });
@@ -5428,12 +5428,12 @@ $(function() {
                     var jsonConfig = config.first().toJSON().rows[0].doc;
                     if(jsonConfig.type == "nation") {
                         if(roles.indexOf("Manager") >= 0 || roles.indexOf("SuperManager") >= 0 ) {
-                            App.$el.children('.body').append('<p id="secLabelOnCollections" style="font-size:30px;color:#808080;margin-right:20px;margin-left:20px;"><a href="#resources"style="font-size:30px;">'+App.languageDict.attributes.Resources+'</a>&nbsp&nbsp|&nbsp&nbsp<a href="#collection" style="font-size:30px;color:#0088CC;text-decoration: underline;">'+App.languageDict.attributes.Collection_s+'</a>&nbsp&nbsp|&nbsp&nbsp<a href="#resources/pending"style="font-size:30px;">'+languageDict.attributes.Pending_Resources+'</a></p>')
+                            App.$el.children('.body').append('<p id="secLabelOnCollections" style="font-size:30px;color:#808080;"><a href="#resources"style="font-size:30px;">'+App.languageDict.attributes.Resources+'</a>&nbsp&nbsp|&nbsp&nbsp<a href="#collection" style="font-size:30px;color:#0088CC;text-decoration: underline;">'+App.languageDict.attributes.Collection_s+'</a>&nbsp&nbsp|&nbsp&nbsp<a href="#resources/pending"style="font-size:30px;">'+languageDict.attributes.Pending_Resources+'</a></p>')
                         } else {
-                            App.$el.children('.body').append('<p id="secLabelOnCollections" style="font-size:30px;color:#808080;margin-right:20px;margin-left:20px;"><a href="#resources"style="font-size:30px;">'+App.languageDict.attributes.Resources+'</a>&nbsp&nbsp|&nbsp&nbsp<a href="#collection" style="font-size:30px;color:#0088CC;text-decoration: underline;">'+App.languageDict.attributes.Collection_s+'</a>&nbsp&nbsp|&nbsp&nbsp<a href="#resources/byownership"style="font-size:30px;">'+languageDict.attributes.Local_Resources+'</a></p>')
+                            App.$el.children('.body').append('<p id="secLabelOnCollections" style="font-size:30px;color:#808080;"><a href="#resources"style="font-size:30px;">'+App.languageDict.attributes.Resources+'</a>&nbsp&nbsp|&nbsp&nbsp<a href="#collection" style="font-size:30px;color:#0088CC;text-decoration: underline;">'+App.languageDict.attributes.Collection_s+'</a>&nbsp&nbsp|&nbsp&nbsp<a href="#resources/byownership"style="font-size:30px;">'+languageDict.attributes.Local_Resources+'</a></p>')
                         }
                     } else {
-                        App.$el.children('.body').append('<p id="secLabelOnCollections" style="font-size:30px;color:#808080;margin-right:20px;margin-left:20px;"><a href="#resources"style="font-size:30px;">'+App.languageDict.attributes.Resources+'</a>&nbsp&nbsp|&nbsp&nbsp<a href="#collection" style="font-size:30px;color:#0088CC;text-decoration: underline;">'+App.languageDict.attributes.Collection_s+'</a>&nbsp&nbsp|&nbsp&nbsp<a href="#resources/community"style="font-size:30px;">'+languageDict.attributes.Local_Resources+'</a></p>')
+                        App.$el.children('.body').append('<p id="secLabelOnCollections" style="font-size:30px;color:#808080;"><a href="#resources"style="font-size:30px;">'+App.languageDict.attributes.Resources+'</a>&nbsp&nbsp|&nbsp&nbsp<a href="#collection" style="font-size:30px;color:#0088CC;text-decoration: underline;">'+App.languageDict.attributes.Collection_s+'</a>&nbsp&nbsp|&nbsp&nbsp<a href="#resources/community"style="font-size:30px;">'+languageDict.attributes.Local_Resources+'</a></p>')
                     }
                     if (roles.indexOf("Manager") != -1)
                         $('#secLabelOnCollections').append('<button id="AddCollectionOnCollections"  class="btn btn-success"  onclick="AddColletcion()">'+App.languageDict.attributes.Add_Collection+'</button>')

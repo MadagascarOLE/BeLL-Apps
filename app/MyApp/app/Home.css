@@ -2,10 +2,8 @@
 .body {
     direction: ltr;
     margin-bottom: 30px;
-}
-div#parentLibrary{
-    margin-left: 20px;
     margin-right: 20px;
+    margin-left:20px;
 }
 /*
 /*input::-moz-focus-inner {
@@ -555,7 +553,6 @@ padding-top: 5px;
 }
 #next_button
 {
-    width:35%;
     float: right;
 
 }
@@ -1031,12 +1028,4 @@ form > fieldset > ul > li.bbf-field.field-selectLanguage {
 }
 #accept div input[name=accept]{
     margin-top: -45px;
-}
-#collectionTable{
-    margin-left:20px;
-    margin-right:20px;
-}
-.table-feedback{
-    margin-left:20px;
-    margin-right:20px
 }

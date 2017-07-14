@@ -640,6 +640,7 @@ body{
 }
 #secLabelOnCollections{
     direction: rtl;
+    margin-right:2%;
 }
 #AddCollectionOnCollections{
     margin-right:8%;
